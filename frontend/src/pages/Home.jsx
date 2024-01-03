@@ -56,6 +56,31 @@ const Home = () => {
       ) : (
         <BooksCard books={books} />
       )}
+      const [currentPage, setCurrentPage] = useState(1);
+      const [itemsPerPage] = useState(10);
+      
+      // Add pagination logic
+      const indexOfLastItem = currentPage * itemsPerPage;
+      const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+      const currentItems = books.slice(indexOfFirstItem, indexOfLastItem);
+      
+      // Add pagination controls
+      <div className="flex justify-center mt-4">
+        <button
+          onClick={() => setCurrentPage(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="mr-2 px-4 py-2 bg-sky-300 rounded"
+        >
+          Previous
+        </button>
+        <button
+          onClick={() => setCurrentPage(currentPage + 1)}
+          disabled={indexOfLastItem >= books.length}
+          className="ml-2 px-4 py-2 bg-sky-300 rounded"
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };
