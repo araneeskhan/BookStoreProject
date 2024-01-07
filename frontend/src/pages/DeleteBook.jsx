@@ -36,12 +36,37 @@ const DeleteBook = () => {
       <div className='flex flex-col items-center border-2 border-sky-400 rounded-xl w-[600px] p-8 mx-auto'>
         <h3 className='text-2xl'>Are You Sure You want to delete this book?</h3>
 
+        const [showConfirmation, setShowConfirmation] = useState(false);
+        
+        // Add confirmation dialog
+        {showConfirmation ? (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+        <div className="bg-white p-6 rounded-lg">
+        <p className="mb-4">Are you sure you want to delete this book?</p>
+        <div className="flex justify-end">
         <button
-          className='p-4 bg-red-600 text-white m-8 w-full'
-          onClick={handleDeleteBook}
+        onClick={() => setShowConfirmation(false)}
+        className="mr-2 px-4 py-2 bg-gray-300 rounded"
         >
-          Yes, Delete it
+        Cancel
         </button>
+        <button
+        onClick={handleDeleteBook}
+        className="px-4 py-2 bg-red-600 text-white rounded"
+        >
+        Delete
+        </button>
+        </div>
+        </div>
+        </div>
+        ) : (
+        <button
+        className='p-4 bg-red-600 text-white m-8 w-full'
+        onClick={() => setShowConfirmation(true)}
+        >
+        Yes, Delete it
+        </button>
+        )}
       </div>
     </div>
   )

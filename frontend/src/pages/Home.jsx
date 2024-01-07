@@ -12,6 +12,7 @@ const Home = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showType, setShowType] = useState('table');
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     setLoading(true);
@@ -45,9 +46,25 @@ const Home = () => {
       </div>
       <div className='flex justify-between items-center'>
         <h1 className='text-3xl my-8'>Books List</h1>
-        <Link to='/books/create'>
-          <MdOutlineAddBox className='text-sky-800 text-4xl' />
-        </Link>
+        // Add search input
+        <div className="flex justify-between items-center mb-4">
+          <input
+            type="text"
+            placeholder="Search books..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="px-4 py-2 border rounded"
+          />
+          <Link to='/books/create'>
+            <MdOutlineAddBox className='text-sky-800 text-4xl' />
+          </Link>
+        </div>
+        
+        // Filter books based on search term
+        const filteredBooks = books.filter(book => 
+          book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          book.author.toLowerCase().includes(searchTerm.toLowerCase())
+        );
       </div>
       {loading ? (
         <Spinner />
