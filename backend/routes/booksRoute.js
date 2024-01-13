@@ -105,4 +105,26 @@ router.delete('/:id', async (request, response) => {
   }
 });
 
+// Add this route for search
+router.get('/search', async (request, response) => {
+  try {
+    const { query } = request.query;
+    const books = await Book.find({
+      $or: [
+        { title: { $regex: query, $options: 'i' } },
+        { author: { $regex: query, $options: 'i' } },
+        { description: { $regex: query, $options: 'i' } }
+      ]
+    });
+    
+    return response.status(200).json({
+      count: books.length,
+      data: books,
+    });
+  } catch (error) {
+    console.log(error.message);
+    response.status(500).send({ message: error.message });
+  }
+});
+
 export default router;
