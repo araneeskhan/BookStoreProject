@@ -13,6 +13,8 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [showType, setShowType] = useState('table');
   const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
 
   useEffect(() => {
     setLoading(true);
@@ -27,6 +29,15 @@ const Home = () => {
         setLoading(false);
       });
   }, []);
+
+  const filteredBooks = books.filter(book => 
+    book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    book.author.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentBooks = filteredBooks.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <div className='p-4'>
@@ -44,56 +55,45 @@ const Home = () => {
           Card
         </button>
       </div>
-      <div className='flex justify-between items-center'>
-        <h1 className='text-3xl my-8'>Books List</h1>
-        // Add search input
-        <div className="flex justify-between items-center mb-4">
+      <div className='flex justify-between items-center mb-8'>
+        <h1 className='text-3xl'>Books List</h1>
+        <div className="flex items-center gap-4">
           <input
             type="text"
             placeholder="Search books..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="px-4 py-2 border rounded"
+            className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400"
           />
           <Link to='/books/create'>
-            <MdOutlineAddBox className='text-sky-800 text-4xl' />
+            <MdOutlineAddBox className='text-sky-800 text-4xl hover:text-sky-600' />
           </Link>
         </div>
-        
-        // Filter books based on search term
-        const filteredBooks = books.filter(book => 
-          book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          book.author.toLowerCase().includes(searchTerm.toLowerCase())
-        );
       </div>
+
       {loading ? (
         <Spinner />
       ) : showType === 'table' ? (
-        <BooksTable books={books} />
+        <BooksTable books={currentBooks} />
       ) : (
-        <BooksCard books={books} />
+        <BooksCard books={currentBooks} />
       )}
-      const [currentPage, setCurrentPage] = useState(1);
-      const [itemsPerPage] = useState(10);
-      
-      // Add pagination logic
-      const indexOfLastItem = currentPage * itemsPerPage;
-      const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-      const currentItems = books.slice(indexOfFirstItem, indexOfLastItem);
-      
-      // Add pagination controls
-      <div className="flex justify-center mt-4">
+
+      <div className="flex justify-center gap-4 mt-8">
         <button
-          onClick={() => setCurrentPage(currentPage - 1)}
+          onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
-          className="mr-2 px-4 py-2 bg-sky-300 rounded"
+          className="px-4 py-2 bg-sky-300 rounded-lg disabled:opacity-50 hover:bg-sky-400"
         >
           Previous
         </button>
+        <span className="px-4 py-2">
+          Page {currentPage} of {Math.ceil(filteredBooks.length / itemsPerPage)}
+        </span>
         <button
-          onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={indexOfLastItem >= books.length}
-          className="ml-2 px-4 py-2 bg-sky-300 rounded"
+          onClick={() => setCurrentPage(prev => prev + 1)}
+          disabled={indexOfLastItem >= filteredBooks.length}
+          className="px-4 py-2 bg-sky-300 rounded-lg disabled:opacity-50 hover:bg-sky-400"
         >
           Next
         </button>
