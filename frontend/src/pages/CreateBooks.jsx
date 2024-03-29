@@ -14,6 +14,15 @@ const CreateBooks = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSaveBook = () => {
+    if (!title.trim() || !author.trim() || !publishYear) {
+      enqueueSnackbar('Please fill all fields', { variant: 'error' });
+      return;
+    }
+    if (isNaN(publishYear) || publishYear < 0) {
+      enqueueSnackbar('Please enter a valid publish year', { variant: 'error' });
+      return;
+    }
+    
     const data = {
       title,
       author,
