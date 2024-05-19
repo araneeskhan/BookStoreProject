@@ -13,9 +13,9 @@ function ErrorFallback({ error }) {
 const App = () => {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <Routes>
-        {/* ... existing routes ... */}
-      </Routes>
+      <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100">
+        <h1 className="text-4xl font-bold mb-4">My App</h1>
+        <p>Some content here...</p>
     </ErrorBoundary>
   );
 };
