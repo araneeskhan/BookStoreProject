@@ -4,32 +4,35 @@ const bookSchema = mongoose.Schema(
   {
     title: {
       type: String,
-      required: true,
+      required: [true, 'Title is required'],
+      trim: true,
+      minLength: [2, 'Title must be at least 2 characters'],
+      maxLength: [100, 'Title cannot exceed 100 characters']
     },
     author: {
       type: String,
-      required: true,
+      required: [true, 'Author is required'],
+      trim: true
     },
     publishYear: {
       type: Number,
       required: true,
+      min: [1800, 'Publish year must be after 1800'],
+      max: [new Date().getFullYear(), 'Publish year cannot be in the future']
     },
     description: {
       type: String,
-      default: ''
+      trim: true,
+      maxLength: [500, 'Description cannot exceed 500 characters']
     },
-    price: {
-      type: Number,
-      required: true,
-      min: 0
-    },
-    coverImage: {
-      type: String,
-      default: ''
+    updatedAt: {
+      type: Date,
+      default: Date.now
     }
   },
   {
     timestamps: true,
+    versionKey: false
   }
 );
 
