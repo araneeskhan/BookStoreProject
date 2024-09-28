@@ -1,16 +1,36 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
 
 const BASE_URL = 'http://localhost:5555';
 const TIMEOUT = 5000;
 const MAX_RETRIES = 2;
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+const cache = new Map();
 
 export const useApi = () => {
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
+  const clearCache = useCallback(() => {
+    cache.clear();
+  }, []);
+
+  const getCacheKey = (method, endpoint, data) => {
+    return `${method}:${endpoint}:${JSON.stringify(data)}`;
+  };
+
   const handleRequest = async (method, endpoint, data = null, retryCount = 0) => {
+    const cacheKey = getCacheKey(method, endpoint, data);
+    
+    if (method === 'GET') {
+      const cachedData = cache.get(cacheKey);
+      if (cachedData && Date.now() - cachedData.timestamp < CACHE_DURATION) {
+        return cachedData.data;
+      }
+    }
+
     setLoading(true);
     try {
       const config = {
@@ -20,6 +40,16 @@ export const useApi = () => {
         timeout: TIMEOUT,
       };
       const response = await axios(config);
+      
+      if (method === 'GET') {
+        cache.set(cacheKey, {
+          data: response.data,
+          timestamp: Date.now()
+        });
+      } else {
+        clearCache(); // Clear cache on mutations
+      }
+
       setLoading(false);
       return response.data;
     } catch (error) {
@@ -37,6 +67,7 @@ export const useApi = () => {
 
   return {
     loading,
+    clearCache,
     get: (endpoint) => handleRequest('GET', endpoint),
     post: (endpoint, data) => handleRequest('POST', endpoint, data),
     put: (endpoint, data) => handleRequest('PUT', endpoint, data),
