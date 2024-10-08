@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
 
@@ -7,11 +7,42 @@ const TIMEOUT = 5000;
 const MAX_RETRIES = 2;
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
+const axiosInstance = axios.create({
+  baseURL: BASE_URL,
+  timeout: TIMEOUT,
+});
+
 const cache = new Map();
 
 export const useApi = () => {
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    const requestInterceptor = axiosInstance.interceptors.request.use(
+      (config) => {
+        // Add any auth headers or other request modifications here
+        return config;
+      },
+      (error) => Promise.reject(error)
+    );
+
+    const responseInterceptor = axiosInstance.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response?.status === 401) {
+          // Handle unauthorized access
+          enqueueSnackbar('Session expired. Please login again.', { variant: 'warning' });
+        }
+        return Promise.reject(error);
+      }
+    );
+
+    return () => {
+      axiosInstance.interceptors.request.eject(requestInterceptor);
+      axiosInstance.interceptors.response.eject(responseInterceptor);
+    };
+  }, [enqueueSnackbar]);
 
   const clearCache = useCallback(() => {
     cache.clear();
