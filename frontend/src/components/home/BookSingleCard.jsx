@@ -6,12 +6,14 @@ import { BsInfoCircle } from 'react-icons/bs';
 import { MdOutlineDelete } from 'react-icons/md';
 import { useState } from 'react';
 import BookModal from './BookModal';
+import LoadingButton from '../LoadingButton';
 
 const BookSingleCard = ({ book }) => {
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   return (
-    <div className='border-2 border-gray-500 rounded-lg px-4 py-2 m-4 relative hover:shadow-xl'>
+    <div className='border-2 border-gray-500 rounded-lg px-4 py-2 m-4 relative hover:shadow-xl transition-shadow'>
       <h2 className='absolute top-1 right-2 px-4 py-1 bg-red-300 rounded-lg'>
         {book.publishYear}
       </h2>
@@ -25,10 +27,13 @@ const BookSingleCard = ({ book }) => {
         <h2 className='my-1'>{book.author}</h2>
       </div>
       <div className='flex justify-between items-center gap-x-2 mt-4 p-4'>
-        <BiShow
-          className='text-3xl text-blue-800 hover:text-black cursor-pointer'
+        <LoadingButton
+          loading={loading}
           onClick={() => setShowModal(true)}
-        />
+          className='text-3xl text-blue-800 hover:text-black cursor-pointer'
+        >
+          <BiShow />
+        </LoadingButton>
         <Link to={`/books/details/${book._id}`}>
           <BsInfoCircle className='text-2xl text-green-800 hover:text-black' />
         </Link>
