@@ -7,6 +7,7 @@ import { BsInfoCircle } from 'react-icons/bs';
 import { MdOutlineAddBox, MdOutlineDelete } from 'react-icons/md';
 import BooksTable from '../components/home/BooksTable';
 import BooksCard from '../components/home/BooksCard';
+import ThemeToggle from '../components/ThemeToggle';
 
 const Home = () => {
   const [books, setBooks] = useState([]);
@@ -40,8 +41,12 @@ const Home = () => {
   const currentBooks = filteredBooks.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
-    <div className='p-4'>
-      <div className='flex justify-center items-center gap-x-4'>
+    <div className='p-4 dark:bg-dark-bg dark:text-dark-text min-h-screen'>
+      <div className='flex justify-between items-center mb-4'>
+        <h1 className='text-3xl'>Books List</h1>
+        <ThemeToggle />
+      </div>
+      <div className="flex justify-center items-center gap-x-4">
         <button
           className='bg-sky-300 hover:bg-sky-600 px-4 py-1 rounded-lg'
           onClick={() => setShowType('table')}
