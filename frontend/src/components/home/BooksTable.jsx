@@ -5,24 +5,20 @@ import { MdOutlineAddBox, MdOutlineDelete } from 'react-icons/md';
 
 const BooksTable = ({ books }) => {
   return (
-    <div className="overflow-x-auto">
-      <table className='w-full border-separate border-spacing-2 dark:border-gray-700'>
+    <div className="overflow-x-auto shadow-lg rounded-lg">
+      <table className='w-full border-separate border-spacing-2 dark:border-gray-700' aria-label="Books list">
         <thead>
-          <tr>
-            <th className='border border-slate-600 rounded-md'>No</th>
-            <th className='border border-slate-600 rounded-md'>Title</th>
-            <th className='border border-slate-600 rounded-md max-md:hidden'>
-              Author
-            </th>
-            <th className='border border-slate-600 rounded-md max-md:hidden'>
-              Publish Year
-            </th>
-            <th className='border border-slate-600 rounded-md'>Operations</th>
+          <tr className="bg-gray-50 dark:bg-gray-800">
+            <th scope="col" className='border border-slate-600 rounded-md p-2'>No</th>
+            <th scope="col" className='border border-slate-600 rounded-md p-2'>Title</th>
+            <th scope="col" className='border border-slate-600 rounded-md max-md:hidden p-2'>Author</th>
+            <th scope="col" className='border border-slate-600 rounded-md max-md:hidden p-2'>Publish Year</th>
+            <th scope="col" className='border border-slate-600 rounded-md p-2'>Operations</th>
           </tr>
         </thead>
         <tbody>
           {books.map((book, index) => (
-            <tr key={book._id} className='h-8 dark:bg-dark-card hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors'>
+            <tr key={book._id} className='h-8 dark:bg-dark-card hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200'>
               <td className='border border-slate-700 rounded-md text-center'>
                 {index + 1}
               </td>
