@@ -10,6 +10,7 @@ const EditBook = () => {
   const [author, setAuthor] = useState('');
   const [publishYear, setPublishYear] = useState('');
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const {id} = useParams();
   const { enqueueSnackbar } = useSnackbar();
@@ -29,7 +30,20 @@ const EditBook = () => {
       });
   }, [])
   
+  const validateForm = () => {
+    const newErrors = {};
+    if (!title.trim()) newErrors.title = 'Title is required';
+    if (!author.trim()) newErrors.author = 'Author is required';
+    if (!publishYear) newErrors.publishYear = 'Publish year is required';
+    if (publishYear && (publishYear < 1000 || publishYear > new Date().getFullYear())) {
+      newErrors.publishYear = 'Please enter a valid year';
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleEditBook = () => {
+    if (!validateForm()) return;
     const data = {
       title,
       author,
@@ -63,8 +77,9 @@ const EditBook = () => {
             type='text'
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className='border-2 border-gray-500 px-4 py-2 w-full'
+            className={`border-2 ${errors.title ? 'border-red-500' : 'border-gray-500'} px-4 py-2 w-full`}
           />
+          {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
         </div>
         <div className='my-4'>
           <label className='text-xl mr-4 text-gray-500'>Author</label>
