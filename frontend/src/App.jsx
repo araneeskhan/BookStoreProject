@@ -1,4 +1,10 @@
 
+import CreateBooks from './pages/CreateBooks';
+import ShowBook from './pages/ShowBook';
+import EditBook from './pages/EditBook';
+import DeleteBook from './pages/DeleteBook';
+import Navbar from './components/Navbar';
+
 function ErrorFallback({ error }) {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-red-50 dark:bg-red-900">
