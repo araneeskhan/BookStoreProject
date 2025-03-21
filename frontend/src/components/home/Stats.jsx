@@ -9,34 +9,40 @@ const Stats = ({ books }) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg transform hover:scale-105 transition-transform">
+      <div className="bg-white dark:bg-dark-card border border-gray-100 dark:border-dark-border rounded-xl p-6 shadow-lg hover:shadow-xl transform hover:scale-105 transition-colors-transform duration-300">
         <div className="flex items-center gap-4">
-          <BiBook className="text-4xl text-primary-500" />
+          <div className="p-3 bg-primary-100 dark:bg-dark-hover rounded-lg">
+            <BiBook className="text-4xl text-primary-500" />
+          </div>
           <div>
-            <h3 className="text-2xl font-bold text-gray-800 dark:text-white">{totalBooks}</h3>
-            <p className="text-gray-600 dark:text-gray-300">Total Books</p>
+            <h3 className="text-2xl font-bold text-gray-800 dark:text-dark-text-primary">{totalBooks}</h3>
+            <p className="text-gray-600 dark:text-dark-text-secondary">Total Books</p>
           </div>
         </div>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg transform hover:scale-105 transition-transform">
+      <div className="bg-white dark:bg-dark-card border border-gray-100 dark:border-dark-border rounded-xl p-6 shadow-lg hover:shadow-xl transform hover:scale-105 transition-colors-transform duration-300">
         <div className="flex items-center gap-4">
-          <BiUser className="text-4xl text-primary-500" />
+          <div className="p-3 bg-primary-100 dark:bg-dark-hover rounded-lg">
+            <BiUser className="text-4xl text-primary-500" />
+          </div>
           <div>
-            <h3 className="text-2xl font-bold text-gray-800 dark:text-white">{uniqueAuthors}</h3>
-            <p className="text-gray-600 dark:text-gray-300">Unique Authors</p>
+            <h3 className="text-2xl font-bold text-gray-800 dark:text-dark-text-primary">{uniqueAuthors}</h3>
+            <p className="text-gray-600 dark:text-dark-text-secondary">Unique Authors</p>
           </div>
         </div>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg transform hover:scale-105 transition-transform">
+      <div className="bg-white dark:bg-dark-card border border-gray-100 dark:border-dark-border rounded-xl p-6 shadow-lg hover:shadow-xl transform hover:scale-105 transition-colors-transform duration-300">
         <div className="flex items-center gap-4">
-          <BiTime className="text-4xl text-primary-500" />
+          <div className="p-3 bg-primary-100 dark:bg-dark-hover rounded-lg">
+            <BiTime className="text-4xl text-primary-500" />
+          </div>
           <div>
-            <h3 className="text-xl font-bold text-gray-800 dark:text-white truncate">
+            <h3 className="text-xl font-bold text-gray-800 dark:text-dark-text-primary truncate">
               {latestBook?.title || 'No books'}
             </h3>
-            <p className="text-gray-600 dark:text-gray-300">Latest Addition</p>
+            <p className="text-gray-600 dark:text-dark-text-secondary">Latest Addition</p>
           </div>
         </div>
       </div>
