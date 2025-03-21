@@ -1,4 +1,5 @@
 import { forwardRef } from 'react';
+import { useEffect } from 'react';
 import { BiCheckCircle, BiErrorCircle, BiInfoCircle } from 'react-icons/bi';
 
 const Toast = forwardRef(({ variant = 'info', message }, ref) => {
@@ -17,5 +18,27 @@ const Toast = forwardRef(({ variant = 'info', message }, ref) => {
     </div>
   );
 });
+
+const Toast = ({ message, type = 'info', onClose }) => {
+  const icons = {
+    success: <BiCheckCircle className="text-green-500 text-xl" />,
+    error: <BiErrorCircle className="text-red-500 text-xl" />,
+    info: <BiInfoCircle className="text-blue-500 text-xl" />
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(onClose, 3000);
+    return () => clearTimeout(timer);
+  }, [onClose]);
+
+  return (
+    <div className="fixed bottom-4 right-4 animate-slide-up">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 flex items-center gap-3">
+        {icons[type]}
+        <p className="text-gray-700 dark:text-gray-200">{message}</p>
+      </div>
+    </div>
+  );
+};
 
 export default Toast;
